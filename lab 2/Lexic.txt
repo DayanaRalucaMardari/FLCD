@@ -1,0 +1,26 @@
+Alphabet:
+a-z
+A-Z
+0-9
+
+Lexic:
+
+operators: +, -, *, /, ==, <, <=, >, >=, =, %
+separators: {}, (), ;, :, space, newline, "
+reserved words: definition, if, else, print, read, var, while, returns
+
+identifier := (letter|"_"){letter}
+letter := "A"|"B"|..|"Z"|"a"|"b"|..|"z"
+digit := "0"|"1"|..|"9"
+
+non_zero_digit := "1"|"2"|"3"|..|"9"
+no_const := "+"non_zero_digit | "-"non_zero_digit | "0" 
+int_const := no_const{digit}
+
+string_const := """{letter|digit|"_"|" "}"""
+character_const := 'letter'|'digit'
+
+
+int := INT_CONST
+string := STRING_CONST | CHARACTER_CONST
+type := INT | STRING
