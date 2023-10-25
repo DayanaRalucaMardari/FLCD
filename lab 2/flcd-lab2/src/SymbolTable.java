@@ -30,4 +30,8 @@ public class SymbolTable {
     public boolean add(String elem) {
         return this.hashTable.addElem(elem);
     }
+
+    public String toString() {
+        return this.hashTable.toString();
+    }
 }
