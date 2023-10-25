@@ -1,0 +1,26 @@
+Review on Lab 2 by Edi
+
+Lexic:
+
+- I like how the lexic is structured, it is easy to read and understand.
+- The way you have used the lexic to explain the different parts of the code is perfect.
+- The language is very clear and easy to understand.
+- It is a very intuitive language.
+
+Syntax:
+
+- I like how you combine the syntax of different popular languages to create a new one.
+- Everything is very well explained and easy to understand.
+- The syntax is very intuitive and easy to follow.
+
+Token:
+
+- The tokens you provided are correct in terms of the language you have created.
+- I like how you used "returns" instead of "return", maybe it should be like this in every language.
+  I think it more sense to use 'returns' because a function "returns" something, it doesn't "return" something.
+- I like that in your language, read is used to read any type of input, not just integers for example.
+
+Overall:
+
+The language created by Dayana is very clear and concise. It is very easy to understand and follow.
+Dayana has done a great job in creating a new language that is easy to use and maintain.
