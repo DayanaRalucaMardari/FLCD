@@ -1,0 +1,14 @@
+var n;
+var index = 0;
+var sum = 0;
+var number;
+
+print("How many number do you want to read?");
+read(n);
+
+while(index < n):
+  read(number);
+  sum = sum + number;
+
+print("The sum is ");
+print(sum);

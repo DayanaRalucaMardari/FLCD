@@ -2,7 +2,9 @@
 -
 *
 /
+%
 ==
+!=
 <=
 >=
 <
@@ -12,14 +14,14 @@
 }
 (
 )
+,
 ;
 :
 space
 newline
-"
-,
 definition
 var
+array
 if
 else
 print

@@ -1,0 +1,10 @@
+var a = 10;
+var b = 2;
+
+while (b != 0) {
+  rest = a % b;
+  a = b;
+  b = rest;
+}
+
+print(b);
