@@ -19,6 +19,7 @@ public class Grammar {
     private final String SEPARATOR_LEFT_RIGHT_HAND_SIDE = "->";
 
     public Grammar(String filePath) {
+        //recursive descendent
         this.filePath = filePath;
         this.nonTerminals = new HashSet<>();
         this.terminals = new HashSet<>();
@@ -33,26 +34,30 @@ public class Grammar {
             this.startingSymbol = scanner.nextLine();
 
             while (scanner.hasNextLine()) {
-                this.processProduction(scanner.nextLine());
+                this.parseProduction(scanner.nextLine());
             }
 
-            this.isCFG();
+            this.CFG = this.isCFG();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    private void processProduction(String production) {
-        String[] splitLandRHS = production.split(this.SEPARATOR_LEFT_RIGHT_HAND_SIDE);
-        List<String> splitLHS = List.of(splitLandRHS[0].split(this.TERMINALS_SEPARATOR));
-        String[] splitRHS = splitLandRHS[1].split(this.PRODUCTION_SEPARATOR);
+    private void parseProduction(String production) {
+        String[] splitLRHS = production.split(this.SEPARATOR_LEFT_RIGHT_HAND_SIDE);
+        List<String> splitLHS = List.of(splitLRHS[0].split(this.TERMINALS_SEPARATOR));
+        String[] splitRHS = splitLRHS[1].split(this.PRODUCTION_SEPARATOR);
 
-        this.productions.putIfAbsent(splitLHS, new HashSet<>()); // if splitLHS does not exist
+        this.productions.putIfAbsent(splitLHS, new HashSet<>());
         for (int i = 0; i < splitRHS.length; i++) {
             String[] terminals = splitRHS[i].split(this.TERMINALS_SEPARATOR);
             this.productions.get(splitLHS).add(Arrays.stream(terminals).collect(Collectors.toList()));
         }
+    }
+
+    public Set<List<String>> getTerminalProductions(List<String> terminal) {
+        return this.productions.get(terminal);
     }
 
     private boolean isCFG() {
@@ -61,7 +66,6 @@ public class Grammar {
         }
 
         for (List<String> LHS : this.productions.keySet()) {
-            // On the left hand side we need to have only one element (A -> a, not AB -> a, where A and B are different non-terminals)
             if (LHS.size() != 1 || !this.nonTerminals.contains(LHS.get(0))) {
                 return false;
             }
