@@ -6,10 +6,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Grammar {
-    private Set<String> nonTerminals;
-    private Set<String> terminals;
+    private List<String> nonTerminals;
+    private List<String> terminals;
     private String startingSymbol;
-    private Map<List<String>, Set<List<String>>> productions;
+    private Map<List<String>, List<List<String>>> productions;
     private boolean CFG;
     private String filePath;
 
@@ -23,8 +23,8 @@ public class Grammar {
     public Grammar(String filePath) {
         //recursive descendent
         this.filePath = filePath;
-        this.nonTerminals = new HashSet<>();
-        this.terminals = new HashSet<>();
+        this.nonTerminals = new ArrayList<>();
+        this.terminals = new ArrayList<>();
         this.productions = new HashMap<>();
         readGrammarFile();
     }
@@ -51,14 +51,15 @@ public class Grammar {
         List<String> splitLHS = List.of(splitLRHS[0].split(this.TERMINALS_SEPARATOR));
         String[] splitRHS = splitLRHS[1].split(this.PRODUCTION_SEPARATOR);
 
-        this.productions.putIfAbsent(splitLHS, new HashSet<>());
+        this.productions.putIfAbsent(splitLHS, new ArrayList<>());
         for (int i = 0; i < splitRHS.length; i++) {
             String[] terminals = splitRHS[i].split(this.TERMINALS_SEPARATOR);
             this.productions.get(splitLHS).add(Arrays.stream(terminals).collect(Collectors.toList()));
+            System.out.println(this.productions.get(splitLHS));
         }
     }
 
-    public Set<List<String>> getNonTerminalProductions(List<String> nonTerminal) {
+    public List<List<String>> getNonTerminalProductions(List<String> nonTerminal) {
         return this.productions.get(nonTerminal);
     }
 
@@ -95,11 +96,11 @@ public class Grammar {
         return true;
     }
 
-    public Set<String> getNonTerminals() {
+    public List<String> getNonTerminals() {
         return nonTerminals;
     }
 
-    public Set<String> getTerminals() {
+    public List<String> getTerminals() {
         return terminals;
     }
 
@@ -107,7 +108,7 @@ public class Grammar {
         return startingSymbol;
     }
 
-    public Map<List<String>, Set<List<String>>> getProductions() {
+    public Map<List<String>, List<List<String>>> getProductions() {
         return productions;
     }
 

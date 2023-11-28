@@ -15,27 +15,25 @@ public class Parser {
     private String[] sequence;
     List<String> inputStack;
     List<List<String>> workingStack;
-    private boolean leftRecursive;
-
+    private final boolean leftRecursive;
 
     public Parser() {
         this.state = State.NORMAL;
         this.index = 0;
         this.maxIndex = 0;
-        this.grammar = new Grammar("/Users/dayana/Documents/uni3/FLCD/FLCD/lab 5/flcd-lab2/G1.txt");
+        this.grammar = new Grammar("/Users/dayana/Documents/uni3/FLCD/FLCD/lab 6/flcd-lab2/G1.txt");
         this.workingStack = new ArrayList<>();
         this.inputStack = new ArrayList<>(List.of(grammar.getStartingSymbol()));
         this.sequence = null;
         this.leftRecursive = checkGrammarLeftRecursive();
-        //this.inputStack.add(grammar.getStartingSymbol());
     }
 
     private boolean checkGrammarLeftRecursive() {
-        for (Map.Entry<List<String>, Set<List<String>>> entry : grammar.getProductions().entrySet()) {
+        for (Map.Entry<List<String>, List<List<String>>> entry : grammar.getProductions().entrySet()) {
             String nonTerminal = entry.getKey().get(0);
             List<List<String>> productions = new ArrayList<>(entry.getValue());
             for (List<String> prod : productions) {
-                for (String symbol : prod.subList(0, prod.size() - 1)) { // de verificat mai mult despre sublist
+                for (String symbol : prod.subList(0, prod.size() - 1)) {
                     if (symbol.equals(nonTerminal)) {
                         return true;
                     }
@@ -87,8 +85,7 @@ public class Parser {
     public void expand() {
         System.out.println("Expand");
         String nonTerminal = this.inputStack.get(0);
-        Set<List<String>> firstProductionsSet = grammar.getNonTerminalProductions(List.of(nonTerminal));
-        List<String> firstProduction = new ArrayList<>(firstProductionsSet).get(0);
+        List<String> firstProduction = grammar.getNonTerminalProductions(List.of(nonTerminal)).get(0);
 
         this.workingStack.add(new ArrayList<>(List.of(nonTerminal, String.join("", firstProduction))));
 
@@ -123,7 +120,7 @@ public class Parser {
             this.inputStack.addAll(0, next);
         } else if (index == 0 && lastProduction.get(0).equals(grammar.getStartingSymbol())) {
             System.out.println("Changing state to ERROR");
-            System.out.println("Error around term " + sequence[maxIndex] + " (index = " + maxIndex + 1 + ")");
+            System.out.println("Error around term " + sequence[maxIndex] + " (index = " + (maxIndex + 1) + ")");
             state = State.ERROR;
         } else {
             this.workingStack.remove(this.workingStack.size() - 1);
@@ -149,17 +146,18 @@ public class Parser {
 
         while (state != State.FINAL && state != State.ERROR) {
             if (state == State.NORMAL) {
-                if (this.inputStack.isEmpty() && this.index == sequence.length) {
+                if (inputStack.isEmpty() && index == sequence.length) {
                     success();
-                } else if (this.inputStack.isEmpty()) {
+                } else if (inputStack.isEmpty()) {
                     momentaryInsuccess();
                 } else {
                     if (grammar.getNonTerminals().contains(inputStack.get(0))) {
                         expand();
                     } else {
+                        // backtrack if index is max
                         if (index == sequence.length) {
                             momentaryInsuccess();
-                        } else if (this.inputStack.get(0).equals(sequence[index])) {
+                        } else if (inputStack.get(0).equals(sequence[index])) {
                             advance();
                         } else {
                             momentaryInsuccess();
