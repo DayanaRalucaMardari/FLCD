@@ -16,6 +16,7 @@ public class Parser {
     List<String> inputStack;
     List<List<String>> workingStack;
     private final boolean leftRecursive;
+    ParserOutput po;
 
     public Parser(State state, int index, List<List<String>> workingStack, List<String> inputStack) {
         this.state = state;
@@ -311,6 +312,12 @@ public class Parser {
         else {
             // else message "Sequence accepted"
             System.out.println("Sequence accepted");
+
+            this.po = new ParserOutput(grammar, workingStack);
+            List<List<String>> rules = po.parsingProductionString();
+            System.out.println("Rules: " + rules);
+            this.po.printCustomTree();
+
         }
         return true;
     }
