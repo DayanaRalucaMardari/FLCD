@@ -17,14 +17,15 @@ public class Parser {
     List<List<String>> workingStack;
     private final boolean leftRecursive;
 
+    // constructor for tests
     public Parser(State state, int index, List<List<String>> workingStack, List<String> inputStack) {
         this.state = state;
         this.index = index;
         this.maxIndex = 0;
         this.grammar = new Grammar("/Users/dayana/Documents/uni3/FLCD/FLCD/lab 6/flcd-lab2/G1.txt");
         this.workingStack = workingStack;
-        this.workingStack.add(List.of(grammar.getStartingSymbol()));
         this.inputStack = inputStack;
+        //this.inputStack.add(grammar.getStartingSymbol());
         this.sequence = null;
         this.leftRecursive = checkGrammarLeftRecursive();
         System.out.println("RIGHT BEFORE");
@@ -53,6 +54,22 @@ public class Parser {
             }
         }
         return false;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public List<String> getLastElemFromWorkingStack() {
+        return workingStack.get(workingStack.size() - 1);
+    }
+
+    public String getFirstElemFromInputList() {
+        return inputStack.get(0);
     }
 
     /***
@@ -131,10 +148,10 @@ public class Parser {
             this.inputStack.addAll(0, List.of(next.split("")));
         } else if (index == 0 && lastProduction.get(0).equals(grammar.getStartingSymbol())) {
             System.out.println("Changing state to ERROR");
-            System.out.println("Error around term " + sequence[maxIndex] + " (index = " + (maxIndex + 1) + ")");
+            //System.out.println("Error around term " + sequence[maxIndex] + " (index = " + (maxIndex + 1) + ")");
             //System.out.println("Error around term " + " (index = " + (maxIndex + 1) + ")");
             state = State.ERROR;
-        } else {
+        } else { // no next prod,
             this.workingStack.remove(this.workingStack.size() - 1);
             this.inputStack.addAll(0, List.of(lastProduction.get(0).split("")));
         }

@@ -17,7 +17,7 @@ public class Main {
 
         List<List<String>> workingStack = new ArrayList<>();
 
-        Parser p = new Parser(State.NORMAL, 0, workingStack, new ArrayList<>());
+        Parser p = new Parser(State.NORMAL, 0, new ArrayList<>(), new ArrayList<>());
         //Parser p = new Parser();
         String ss = "10";
         String[] s = ss.split("");
