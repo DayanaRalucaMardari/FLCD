@@ -9,14 +9,14 @@ class Node {
     String name;
     int parent;
     int sibling;
-    int production; // keeps the number of the production here and not the production itself
+    String production; // keeps the number of the production here and not the production itself
     List<Node> children;
 
     public Node(String name) {
         this.name = name;
         this.parent = -1;
         this.sibling = -1;
-        this.production = -1;
+        this.production = null;
         this.children = new ArrayList<>();
     }
 
@@ -30,25 +30,25 @@ class Node {
 
 
 
-    public String toString() {
-        StringBuilder buffer = new StringBuilder(50);
-        print(buffer, "", "");
-        return buffer.toString();
-    }
-
-    private void print(StringBuilder buffer, String prefix, String childrenPrefix) {
-        buffer.append(prefix);
-        buffer.append(name);
-        buffer.append('\n');
-        for (Iterator<Node> it = children.iterator(); it.hasNext();) {
-            Node next = it.next();
-            if (it.hasNext()) {
-                next.print(buffer, childrenPrefix + "├── ", childrenPrefix + "│   ");
-            } else {
-                next.print(buffer, childrenPrefix + "└── ", childrenPrefix + "    ");
-            }
-        }
-    }
+//    public String toString() {
+//        StringBuilder buffer = new StringBuilder(50);
+//        print(buffer, "", "");
+//        return buffer.toString();
+//    }
+//
+//    private void print(StringBuilder buffer, String prefix, String childrenPrefix) {
+//        buffer.append(prefix);
+//        buffer.append(name);
+//        buffer.append('\n');
+//        for (Iterator<Node> it = children.iterator(); it.hasNext();) {
+//            Node next = it.next();
+//            if (it.hasNext()) {
+//                next.print(buffer, childrenPrefix + "├── ", childrenPrefix + "│   ");
+//            } else {
+//                next.print(buffer, childrenPrefix + "└── ", childrenPrefix + "    ");
+//            }
+//        }
+//    }
 }
 
 public class ParserOutput {
@@ -130,58 +130,62 @@ public class ParserOutput {
         }
     }
 
-//    private void createParsingTree() {
-//        int father = -1;
-//        for (int index = 0; index < workingStack.size(); index++) {
-//            if (workingStack.get(index).size() == 2) { // is of form [non-terminal, production]
-//                List<String> elem = workingStack.get(index);
-//                tree.add(new Node(elem.get(0)));
-//                tree.get(index).production = elem.get(1);
-//            } else { // is of form [terminal]
-//                tree.add(new Node(workingStack.get(index).get(0)));
-//            }
-//        }
-//
-//        for (int index = 0; index < workingStack.size(); index++) {
-//            if (workingStack.get(index).size() == 2) {
-//                List<String> elem = workingStack.get(index);
-//                tree.get(index).parent = father;
-//                father = index;
-//                int lenProd = grammar.getProductions().get(tuple.getElement1()).get(tuple.getElement2()).size();
-//                List<Integer> vectorIndex = new ArrayList<>();
-//                for (int i = 1; i <= lenProd; i++) {
-//                    vectorIndex.add(index + i);
-//                }
-//                for (int i = 0; i < lenProd; i++) {
-//                    if (tree.get(vectorIndex.get(i)).production != null) {
-//                        int offset = getLenDepth(vectorIndex.get(i));
-//                        for (int j = i + 1; j < lenProd; j++) {
-//                            vectorIndex.set(j, vectorIndex.get(j) + offset);
-//                        }
-//                    }
-//                }
-//                for (int i = 0; i < lenProd - 1; i++) {
-//                    tree.get(vectorIndex.get(i)).sibling = vectorIndex.get(i + 1);
-//                }
-//            } else {
-//                tree.get(index).father = father;
-//                father = -1;
-//            }
-//        }
-//
-//    private int getLenDepth(int index) {
-//        List<String> production = grammar.getProductions().get(((Tuple) working.get(index)).getElement1())
-//                .get(((Tuple) working.get(index)).getElement2());
-//        int lenProd = production.size();
-//        int sum = lenProd;
-//        for (int i = 1; i <= lenProd; i++) {
-//            if (working.get(index + i) instanceof Tuple) {
+    private void createParsingTree() {
+        int father = -1;
+        for (int index = 0; index < workingStack.size(); index++) {
+            if (workingStack.get(index).size() == 2) { // is of form [non-terminal, production (the nr of the production)]
+                List<String> elem = workingStack.get(index);
+                tree.add(new Node(elem.get(0)));
+                tree.get(index).production = elem.get(1);
+            } else { // is of form [terminal]
+                tree.add(new Node(workingStack.get(index).get(0)));
+            }
+        }
+
+        for (int index = 0; index < workingStack.size(); index++) {
+            if (workingStack.get(index).size() == 2) {
+                List<String> elem = workingStack.get(index);
+                tree.get(index).parent = father;
+                father = index;
+                // int lenProd = grammar.getProductions().get(elem.get(0)).get(elem.get(1)).size();
+                // number of productions for a non terminal
+                int lenProd = grammar.getNonTerminalProductions(List.of(elem.get(0))).size();
+                List<Integer> vectorIndex = new ArrayList<>();
+                for (int i = 1; i <= lenProd; i++) {
+                    vectorIndex.add(index + i);
+                }
+                for (int i = 0; i < lenProd; i++) {
+                    if (tree.get(vectorIndex.get(i)).production != null) {
+                        int offset = getLenDepth(vectorIndex.get(i));
+                        for (int j = i + 1; j < lenProd; j++) {
+                            vectorIndex.set(j, vectorIndex.get(j) + offset);
+                        }
+                    }
+                }
+                for (int i = 0; i < lenProd - 1; i++) {
+                    tree.get(vectorIndex.get(i)).sibling = vectorIndex.get(i + 1);
+                }
+            } else {
+                tree.get(index).parent = father;
+                father = -1;
+            }
+        }
+    }
+
+    private int getLenDepth(int index) {
+//        List<String> production = grammar.getProductions().get(((Tuple) workingStack.get(index)).getElement1())
+//                .get(((Tuple) workingStack.get(index)).getElement2());
+        List<String> production = new ArrayList<>();
+        int lenProd = production.size();
+        int sum = lenProd;
+        for (int i = 1; i <= lenProd; i++) {
+//            if (workingStack.get(index + i) instanceof Tuple) { // has 2 elements
 //                sum += getLenDepth(index + i);
 //            }
-//        }
-//        return sum;
-//    }
-
+        }
+        return sum;
+    }
+//
 //    public void printTree() {
 //        PrintCustomTree printCustomTree = new PrintCustomTree();
 //        printCustomTree.printTree(root);
@@ -196,3 +200,4 @@ public class ParserOutput {
 //        }
 //    }
 }
+

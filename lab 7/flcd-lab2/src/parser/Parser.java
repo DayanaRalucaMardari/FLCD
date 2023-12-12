@@ -1,12 +1,14 @@
 package parser;
 
+import parser.Grammar;
+
 import java.util.*;
 
 public class Parser {
 
-//    private enum State {
-//        NORMAL, ERROR, BACK, FINAL
-//    }
+    private enum State {
+        NORMAL, ERROR, BACK, FINAL
+    }
 
     State state;
     int index;
@@ -16,34 +18,21 @@ public class Parser {
     List<String> inputStack;
     List<List<String>> workingStack;
     private final boolean leftRecursive;
-    ParserOutput po;
-
-    public Parser(State state, int index, List<List<String>> workingStack, List<String> inputStack) {
-        this.state = state;
-        this.index = index;
-        this.maxIndex = 0;
-        this.grammar = new Grammar("/Users/dayana/Documents/uni3/FLCD/FLCD/lab 6/flcd-lab2/G1.txt");
-        this.workingStack = workingStack;
-        this.workingStack.add(List.of(grammar.getStartingSymbol()));
-        this.inputStack = inputStack;
-        this.sequence = null;
-        this.leftRecursive = checkGrammarLeftRecursive();
-        System.out.println("RIGHT BEFORE");
-        print();
-    }
 
     public Parser() {
         this.state = State.NORMAL;
         this.index = 0;
         this.maxIndex = 0;
-        this.grammar = new Grammar("/Users/dayana/Documents/uni3/FLCD/FLCD/lab 6/flcd-lab2/G1.txt");
+        this.grammar = new Grammar("/Users/dayana/Documents/uni3/FLCD/FLCD/lab 7/flcd-lab2/G1.txt");
         this.workingStack = new ArrayList<>();
         this.inputStack = new ArrayList<>(List.of(grammar.getStartingSymbol()));
         this.sequence = null;
         this.leftRecursive = checkGrammarLeftRecursive();
     }
 
-    private boolean checkGrammarLeftRecursive() {
+
+
+    public boolean checkGrammarLeftRecursive() {
         for (Map.Entry<List<String>, List<List<String>>> entry : grammar.getProductions().entrySet()) {
             String nonTerminal = entry.getKey().get(0);
             List<List<String>> productions = new ArrayList<>(entry.getValue());
@@ -98,7 +87,7 @@ public class Parser {
     public void expand() {
         System.out.println("Expand");
         String nonTerminal = this.inputStack.get(0);
-        List<String> firstProduction = grammar.getNonTerminalProductions(List.of(nonTerminal)).get(0);
+        List<String> firstProduction = new ArrayList<>(grammar.getNonTerminalProductions(List.of(nonTerminal))).get(0);
 
         this.workingStack.add(new ArrayList<>(List.of(nonTerminal, String.join("", firstProduction))));
 
@@ -118,28 +107,34 @@ public class Parser {
     public void anotherTry() {
         System.out.println("Another try");
 
-        List<String> lastProduction = this.workingStack.get(workingStack.size()-1); // [S, aSbS]
-        String nonTerminal = lastProduction.get(0); // S
+        List<String> lastProduction = this.workingStack.get(workingStack.size() - 1);
+        String nonTerminal = lastProduction.get(0);
 
         String next = this.grammar.getNextProduction(lastProduction.get(1), nonTerminal);
+        //System.out.println("NEXT: " + next + "   LAST PROD: " + lastProduction);
         if (next != null) {
             System.out.println("Changing state to NORMAL");
             this.state = State.NORMAL;
             this.workingStack.remove(this.workingStack.size() - 1);
             this.workingStack.add(new ArrayList<>(List.of(nonTerminal, String.join("", next))));
 
+            // Clear the input stack and add the new sequence
             this.inputStack.subList(0, lastProduction.get(1).length()).clear();
             this.inputStack.addAll(0, List.of(next.split("")));
         } else if (index == 0 && lastProduction.get(0).equals(grammar.getStartingSymbol())) {
             System.out.println("Changing state to ERROR");
             System.out.println("Error around term " + sequence[maxIndex] + " (index = " + (maxIndex + 1) + ")");
-            //System.out.println("Error around term " + " (index = " + (maxIndex + 1) + ")");
             state = State.ERROR;
         } else {
+            System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             this.workingStack.remove(this.workingStack.size() - 1);
-            this.inputStack.addAll(0, List.of(lastProduction.get(0).split("")));
+
+            // Clear the input stack and add the last production
+            this.inputStack.subList(0, lastProduction.get(1).length()).clear();
+            this.inputStack.addAll(0, List.of(lastProduction.get(1).split("")));
         }
     }
+
 
     public boolean checkSequence(String[] sequence) {
         print();
@@ -160,53 +155,7 @@ public class Parser {
 
         this.sequence = sequence;
 
-//        while (state != State.FINAL && state != State.ERROR) {
-//            print();
-//            if (state == State.NORMAL) {
-//                if (inputStack.size() == 1 && inputStack.get(0).equals(grammar.getStartingSymbol()) && index == sequence.length) {
-//                    // then Success
-//                    success();
-//                    print();
-//                } else if (inputStack.isEmpty()) {
-//                    momentaryInsuccess();
-//                    print();
-//                    break;
-//                } else {
-//                    if (grammar.getNonTerminals().contains(inputStack.get(0))) {
-//                        expand();
-//                        print();
-//                    } else {
-//                        if (index < sequence.length && Objects.equals(inputStack.get(0), sequence[index])) {
-//                            advance();
-//                            print();
-//                        } else {
-//                            momentaryInsuccess();
-//                            print();
-//                        }
-//                    }
-//                }
-//            } else {
-//                if (state == State.BACK) {
-//                    if (index == 0 && workingStack.size() == 0) {
-//                        state = State.ERROR;
-//                        System.out.println("No top working to look back in Back");
-//                        break;
-//                    } else {
-//                        //List<String> lastElem = workingStack.get(workingStack.size() - 1);
-//                        List<String> terminals = new ArrayList<>(grammar.getTerminals());
-//                        if (terminals.contains(workingStack.get(workingStack.size() - 1).get(0))) {
-//                            back();
-//                            print();
-//                        } else {
-//                            anotherTry();
-//                            print();
-//                        }
-//                    }
-//                }
-//            }
-//        }
-
-         //while (s != f) and (s != e)
+        // while (s != f) and (s != e)
 //        while (state != State.FINAL && state != State.ERROR) {
 //            // if s == q
 //            if (state == State.NORMAL) {
@@ -253,6 +202,7 @@ public class Parser {
 //            }
 //        }
 
+
         while (state != State.FINAL && state != State.ERROR) {
             // if s == q
             if (state == State.NORMAL) {
@@ -264,14 +214,14 @@ public class Parser {
                 }
                 else {
                     // if Head(beta) == A
-                    if (grammar.getNonTerminals().contains(inputStack.get(0))) {
+                    if (!inputStack.isEmpty() && grammar.getNonTerminals().contains(inputStack.get(0)) && index < sequence.length) {
                         // Then Expand
                         expand();
                         print();
                     }
                     else {
                         // if Head(beta) == ai;   ai - sequence(index)
-                        if (inputStack.get(0).equals(sequence[index])) {
+                        if (!inputStack.isEmpty() && index < sequence.length && inputStack.get(0).equals(sequence[index])) {
                             // then Advance
                             advance();
                             print();
@@ -312,16 +262,9 @@ public class Parser {
         else {
             // else message "Sequence accepted"
             System.out.println("Sequence accepted");
-
-            this.po = new ParserOutput(grammar, workingStack);
-            List<List<String>> rules = po.parsingProductionString();
-            System.out.println("Rules: " + rules);
-            this.po.printCustomTree();
-
         }
         return true;
     }
-
     public void print() {
         System.out.println("---------");
         System.out.println("state: " + state);

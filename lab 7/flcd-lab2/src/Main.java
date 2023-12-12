@@ -1,6 +1,5 @@
 import parser.Grammar;
 import parser.Parser;
-import parser.State;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,18 +7,17 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         //parser.Grammar grammar = new parser.Grammar("/Users/dayana/Documents/uni3/FLCD/FLCD/lab 5/flcd-lab2/G1.txt");
-//        Grammar grammar = new Grammar("/Users/dayana/Documents/uni3/FLCD/FLCD/lab 6/flcd-lab2/G1.txt");
+        //Grammar grammar = new Grammar("/Users/dayana/Documents/uni3/FLCD/FLCD/lab 7/flcd-lab2/G1.txt");
 //        System.out.println(grammar.getNonTerminals());
 //        System.out.println(grammar.getTerminals());
 //        System.out.println(grammar.getStartingSymbol());
-//        System.out.println(grammar.getProductions());
+        //System.out.println(grammar.getProductions());
 //        System.out.println(grammar.getNonTerminalProductions(List.of("S")));
 
-        List<List<String>> workingStack = new ArrayList<>();
 
-        Parser p = new Parser(State.NORMAL, 0, workingStack, new ArrayList<>());
-        //Parser p = new Parser();
-        String ss = "10";
+        //Parser p = new Parser(State.NORMAL, 0, new ArrayList<>(), new ArrayList<>());
+        Parser p = new Parser();
+        String ss = "246";
         String[] s = ss.split("");
         p.checkSequence(s);
     }
