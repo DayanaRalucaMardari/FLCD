@@ -2,6 +2,9 @@ package parser;
 
 import parser.Grammar;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 public class Parser {
@@ -18,6 +21,7 @@ public class Parser {
     List<String> inputStack;
     List<List<String>> workingStack;
     private final boolean leftRecursive;
+
 
     public Parser() {
         this.state = State.NORMAL;
@@ -135,8 +139,19 @@ public class Parser {
         }
     }
 
+    private String[] readSequence() throws IOException {
+        Path file = Path.of("/Users/dayana/Documents/uni3/FLCD/FLCD/lab 7/flcd-lab2/seq.txt");
+        String seq = Files.readString(file);
+        return seq.split("");
+    }
 
-    public boolean checkSequence(String[] sequence) {
+
+    public boolean checkSequence() {
+        try {
+            sequence = readSequence();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         print();
         if (leftRecursive) {
             System.out.println("Grammar is left recursive.");
@@ -262,6 +277,14 @@ public class Parser {
         else {
             // else message "Sequence accepted"
             System.out.println("Sequence accepted");
+
+            ParserOutput po = new ParserOutput(grammar, workingStack);
+            po.parsingTable();
+            try {
+                po.printParsingTable();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         return true;
     }

@@ -1,6 +1,4 @@
-S&A&B
-1&2&3&4&5&6
 S
-S->1 S|2 A|3 B
-A->4 B|B
-B->5|6
+a&b&c&d
+S
+S->a S b S|c S|c

@@ -17,9 +17,9 @@ public class Main {
 
         //Parser p = new Parser(State.NORMAL, 0, new ArrayList<>(), new ArrayList<>());
         Parser p = new Parser();
-        String ss = "246";
+        String ss = "accbcc";
         String[] s = ss.split("");
-        p.checkSequence(s);
+        p.checkSequence();
     }
 
 
