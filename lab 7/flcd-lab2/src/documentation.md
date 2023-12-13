@@ -126,3 +126,22 @@ The transition has the `(from, to, label)` triplet form.
 
 `number = non_zero_digit {digit}`
 
+## Parser
+* `checkGrammarLeftRecursive` - checks if the grammars is left recursive. Returns true if is left recursive. Otherwise, false
+* `momentaryInsuccess` - changes the state to `BACK`
+* `success` - changes the state to `FINAL`
+* `advance` - increases the index with 1. Pushes the top element of the inputStack into the workingStack. Pops the element from the inputStack.
+* `exapnd` - Takes the non-terminal from the inputStack and searches for the first production. Pushes on the workingStack 
+the first production of the non-terminal as a list containing the non-terminal and the first production. Pops the non-terminal from the inputStack and pushes the first production into the inputStack.
+* `back` - decreases the index with 1. Moves the terminal from the working stack to the input stack
+* `anotherTry` - takes another try by going to the next production if available. Error if it reaches the index 1 and the non-terminal equals the starting symbol. Otherwise, exception.
+* `readSequence` - reads a string from a text file and returns a String array of chars
+* `checkSequence` - checks whether the given sequence accepted
+
+## ParserOutput
+
+* `parsingProductionString()` - returns a list of the rules. Adds the productions needed for building the tree
+*  `parsingTable()` - creates the root of the tree and calls the function for building the tree starting from the root
+* `parsingTableRec(Node father, List<List<String>> rules, int ruleIndex)` - recursive function that builds the nodes starting from the root. It uses the rules provided as a parameter and keeps track of the index of the children
+* `printParsingTable()` - prints the parsing table (index, name, parent, right sibling of every node in the tree)
+* `printParsingTableToFile()` - prints the parsing table to a text file

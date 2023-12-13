@@ -55,10 +55,6 @@ public class ParserOutput {
         List<List<String>> rules = new ArrayList<>();
         for (List<String> production : workingStack) {
             if (production.size() > 1) {
-//                if (grammar.getProductions().containsKey(List.of(production.get(0))) &&
-//                        grammar.getProductions().get(List.of(production.get(0))).contains(List.of(production.get(1)))) {
-//                    rules.add(production);
-//                }
                 rules.add(production);
             }
         }
