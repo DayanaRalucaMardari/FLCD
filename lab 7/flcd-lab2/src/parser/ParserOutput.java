@@ -55,7 +55,7 @@ public class ParserOutput {
         List<List<String>> rules = new ArrayList<>();
         for (List<String> production : workingStack) {
             if (production.size() > 1) {
-                rules.add(production);
+                rules.add(production); // [S, aSbS]
             }
         }
         return rules;
