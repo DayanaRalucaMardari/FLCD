@@ -1,0 +1,80 @@
+int - reserved word
+  - separator
+nr1 - identifier
+= - operator
+10 - integer constant
+; - separator
+int - reserved word
+  - separator
+nr2 - identifier
+= - operator
+-23 - integer constant
+; - separator
+int - reserved word
+  - separator
+nr3 - identifier
+= - operator
+1 - integer constant
+; - separator
+smallest - identifier
+= - operator
+nr1 - identifier
+; - separator
+if - reserved word
+( - separator
+nr2 - identifier
+< - operator
+smallest - identifier
+) - separator
+: - separator
+smallest - identifier
+= - operator
+nr2 - identifier
+; - separator
+if - reserved word
+( - separator
+nr3 - identifier
+< - operator
+smallest - identifier
+) - separator
+: - separator
+smallest - identifier
+= - operator
+nr3 - identifier
+; - separator
+print - reserved word
+( - separator
+smallest - identifier
+) - separator
+; - separator
+greatest - identifier
+= - operator
+nr2 - identifier
+; - separator
+if - reserved word
+( - separator
+nr2 - identifier
+> - operator
+greatest - identifier
+) - separator
+: - separator
+greatest - identifier
+= - operator
+nr2 - identifier
+; - separator
+if - reserved word
+( - separator
+nr3 - identifier
+> - operator
+greatest - identifier
+) - separator
+: - separator
+greatest - identifier
+= - operator
+nr3 - identifier
+; - separator
+print - reserved word
+( - separator
+greatest - identifier
+) - separator
+; - separator

@@ -45,7 +45,6 @@ public class MyScanner {
                     case "definition", "if", "else", "print", "read", "var", "while", "returns" -> reservedWords.add(token[0]);
                     default -> tokens.add(token[0]);
                 }
-//                System.out.println(token[0]);
             }
         } catch (FileNotFoundException exception) {
             exception.printStackTrace();
@@ -145,13 +144,6 @@ public class MyScanner {
      * @return false, if there is no match or if the identifier is not valid. Otherwise, true.
      */
     private Boolean tryIdentifierMatching() {
-//        var identifierRegex = Pattern.compile("^([a-zA-Z_][0-9a-zA-Z_]*)");
-//        var matcher = identifierRegex.matcher(sourceCode.substring(index));
-//
-//        if (!matcher.find()) {
-//            return false;
-//        }
-//        var identifier = matcher.group(1);
         var fa = new FiniteAutomaton("identifier.txt");
         var identifier = fa.getNextAccepted(sourceCode.substring(index));
         if (identifier == null) {
@@ -229,11 +221,6 @@ public class MyScanner {
      * @return true, if the number is valid. Otherwise, false.
      */
     private boolean tryIntConstMatching() {
-//        var regexForIntConstant = Pattern.compile("^([+-]?[1-9][0-9]*|0)");
-//        var matcher = regexForIntConstant.matcher(sourceCode.substring(index));
-//        if (!matcher.find()) {
-//            return false;
-//        }
         if (Pattern.compile("^([+-]?[1-9][0-9]*|0)[a-zA-z_]").matcher(sourceCode.substring(index)).find()) {
             return false;
         }
@@ -243,7 +230,6 @@ public class MyScanner {
             return false;
         }
 
-        //var intConstant = matcher.group(1);
         index += intConstant.length();
         Pair<Integer, Integer> position;
         try {

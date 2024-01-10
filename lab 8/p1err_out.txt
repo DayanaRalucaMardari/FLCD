@@ -1,0 +1,3 @@
+int - reserved word
+  - separator
+Error at token 1nr at line 1

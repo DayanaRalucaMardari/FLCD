@@ -1,0 +1,17 @@
+int 1nr=10;
+int nr2=-23;
+int nr3=1;
+
+smallest = nr1;
+if(nr2<smallest):
+  smallest=nr2;
+if(nr3<smallest):
+  smallest=nr3;
+print(smallest);
+
+greatest=nr2;
+if(3nr2>greatest):
+  greatest=nr2;
+if(nr3>greatest):
+  greatest=nr3;
+print(greatest);

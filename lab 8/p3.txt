@@ -1,0 +1,14 @@
+int n;
+int index = 0;
+int sum = 0;
+int number;
+
+print('How many number do you want to read?');
+read(n);
+
+while(index < n):
+  read(number);
+  sum = sum + number;
+
+print('The sum is ');
+print(sum);

@@ -1,5 +1,3 @@
-## Github link: https://github.com/DayanaRalucaMardari/FLCD/tree/main/lab%204
-
 ## SymbolTable
 
 Implemented a SymbolTable based on a **HashTable** which can be used for both the IDENTIFIERS and CONSTANTS, 

@@ -1,0 +1,53 @@
+int - reserved word
+  - separator
+a - identifier
+  - separator
+= - operator
+  - separator
+10 - integer constant
+; - separator
+int - reserved word
+  - separator
+b - identifier
+  - separator
+= - operator
+  - separator
+2 - integer constant
+; - separator
+while - reserved word
+( - separator
+b - identifier
+  - separator
+!= - operator
+  - separator
+0 - integer constant
+) - separator
+{ - separator
+rest - identifier
+  - separator
+= - operator
+  - separator
+a - identifier
+  - separator
+% - operator
+  - separator
+b - identifier
+; - separator
+a - identifier
+  - separator
+= - operator
+  - separator
+b - identifier
+; - separator
+b - identifier
+  - separator
+= - operator
+  - separator
+rest - identifier
+; - separator
+} - separator
+print - reserved word
+( - separator
+b - identifier
+) - separator
+; - separator

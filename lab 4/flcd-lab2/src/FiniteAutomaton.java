@@ -21,10 +21,8 @@ public class FiniteAutomaton {
         this.transitions = new ArrayList<>();
         this.finalStates = new ArrayList<>();
 
-        // init, read functions with try catch block?
         try {
             init();
-            //System.out.println("The FA file was read successfully.");
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("The FA file could not be read.");
@@ -47,7 +45,6 @@ public class FiniteAutomaton {
             }
 
             var category = matcher.group(0);
-            //System.out.println("Category -> " + category);
 
             if (category == null) {
                 throw new Exception("The line is not valid: " + line);
@@ -83,7 +80,6 @@ public class FiniteAutomaton {
                 default -> throw new Exception("Invalid line. It does not represent any category.");
             }
         }
-        //System.out.println("alphabet -> " + alphabet);
     }
 
     /**

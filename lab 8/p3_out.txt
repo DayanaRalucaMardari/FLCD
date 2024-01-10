@@ -1,0 +1,27 @@
+int - reserved word
+  - separator
+n - identifier
+; - separator
+int - reserved word
+  - separator
+index - identifier
+  - separator
+= - operator
+  - separator
+0 - integer constant
+; - separator
+int - reserved word
+  - separator
+sum - identifier
+  - separator
+= - operator
+  - separator
+0 - integer constant
+; - separator
+int - reserved word
+  - separator
+number - identifier
+; - separator
+print - reserved word
+( - separator
+Error at token " at line 5

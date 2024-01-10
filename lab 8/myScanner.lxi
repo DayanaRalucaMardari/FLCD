@@ -1,0 +1,40 @@
+%{
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
+
+    int lines = 1;
+%}
+
+%option noyywrap
+%option caseless
+
+digit [0-9]
+non_zero_digit [1-9]
+int_constant [+-]?{non_zero_digit}{digit}*|0
+letter [a-zA-Z]
+special_char [ ?:*\^+=.!]
+string_constant (\'({letter}|{digit}|{special_char})*\')
+identifier {letter}({letter}|{digit})*
+bad_identifier {digit}{identifier}
+
+%%
+
+"if"|"else"|"print"|"read"|"while"|"returns"|"int"|"str" printf("%s - reserved word\n", yytext);
+"+"|"-"|"/"|"%"|"="|"!="|"<"|">"|"<="|">="|"==" printf("%s - operator\n", yytext);
+"("|")"|"{"|"}"|"'"|":"|";"|" " printf("%s - separator\n", yytext);
+{identifier} printf("%s - identifier\n", yytext);
+{bad_identifier} {printf("Error at token %s at line %d\n", yytext, lines); exit(1);}
+{int_constant} printf("%s - integer constant\n", yytext);
+{string_constant} printf("%s - string constant\n", yytext);
+[ \t]+ {}
+[\n]+ {++lines;}
+. {printf("Error at token %s at line %d\n", yytext, lines); exit(1);}
+%%
+int main(int argc, char** argv) {
+    if (argc > 1) 
+        yyin = fopen(argv[1], "r");
+    else 
+        yyin = stdin;
+    yylex();
+}
