@@ -20,7 +20,6 @@ int yyerror(char *s);
 %token ELSE;
 %token PRINT;
 %token WHILE;
-%token ARR;
 
 %token PLUS;
 %token MINUS;
@@ -69,7 +68,6 @@ DeclarationStmt : IDENTIFIER OPEN Type CLOSE COMMA DeclarationStmt     { printf(
 Type : INT     { printf("Type -> int\n"); }
      | STR     { printf("Type -> str\n"); }
      | CHAR     { printf("Type -> char\n"); }
-     | ARR     { printf("Type -> arr\n"); }
      ;
 
 ReadStmt : READ OPEN IDENTIFIER CLOSE     { printf("ReadStmt -> read ( IDENTIFIER )\n"); }
@@ -80,7 +78,6 @@ PrintStmt : PRINT OPEN Expression CLOSE     { printf("PrintStmt -> print ( Expre
                ;
 
 AssignmentStmt : IDENTIFIER EQ Expression     { printf("AssignmentStmt -> IDENTIFIER = Expression\n"); }
-                    | IDENTIFIER EQ ArrayStmt     { printf("AssignmentStmt -> IDENTIFIER = ArrayStmt\n"); }
                     ;
 Expression : Expression PLUS Term     { printf("Expression -> Expression + Term\n"); }
            | Expression MINUS Term     { printf("Expression -> Expression - Term\n"); }
@@ -96,16 +93,15 @@ Factor : OPEN Expression CLOSE     { printf("Factor -> ( Expression )\n"); }
        | MINUS IDENTIFIER     { printf("Factor -> - IDENTIFIER\n"); }
        | SQRT OPEN Expression CLOSE     { printf("Factor -> sqrt ( Expression )\n"); }
        ;
-ArrayStmt : SQBRACKETOPEN SQBRACKETCLOSE    { printf("ArrayStmt -> []\n"); }
-               | SQBRACKETOPEN ExpressionList SQBRACKETCLOSE    { printf("ArrayStmt -> [ ExpressionList ]\n"); }
-               ;
+
 ExpressionList : Expression COMMA ExpressionList    { printf("ExpressionList -> Expression , ExpressionList\n"); }
                | Expression    { printf("ExpressionList -> Expression\n"); }
                ;
-IfStmt : IF Condition BRACKETOPEN CompoundStmt BRACKETCLOSE  { printf("IfStmt -> if Expression { CompoundStmt }\n"); }
-            | IF Condition BRACKETOPEN CompoundStmt BRACKETCLOSE ELSE BRACKETOPEN CompoundStmt BRACKETCLOSE  { printf("IfStmt -> if Expression { CompoundStmt } else { CompoundStmt }\n"); }
+
+IfStmt : IF OPEN Condition CLOSE COLON CompoundStatement  { printf("IfStatement -> if (Expression): CompoundStatement\n"); }
             ;
-WhileStmt : WHILE Condition BRACKETOPEN CompoundStmt BRACKETCLOSE  { printf("WhileStmt -> while Expression { CompoundStmt }\n"); }
+
+WhileStmt : WHILE OPEN Condition CLOSE COLON CompoundStatement BRACKETCLOSE  { printf("WhileStatement -> while ( Expression): CompoundStatement \n"); }
                ;
 Condition : Expression Relation Expression     { printf("Condition -> Expression Relation Expression\n"); }
           ;
